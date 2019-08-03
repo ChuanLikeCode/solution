@@ -35,6 +35,36 @@ public class Solution {
         System.out.println(longestPalindrome("aabaavvvvvvv"));
     }
 
+
+    /**
+     * 最大乘积
+     */
+    public static long maxNum(long[] nums){
+        long max1 = Integer.MIN_VALUE,max2 = Integer.MIN_VALUE,max3=Integer.MIN_VALUE;
+        long min1 = Integer.MAX_VALUE,min2 = Integer.MAX_VALUE;
+        for(long num : nums){
+            if(num > max1){
+
+                max3 = max2;
+                max2 = max1;
+                max1 = num;
+            }else if(num > max2){
+                max3 = max2;
+                max2 = num;
+            }else if(num > max3){
+                max3 = num;
+            }
+
+            if(num < min1){
+                min2 = min1;
+                min1 = num;
+            }else if(num < min2){
+                min2 = num;
+            }
+        }
+        return Math.max(max1*max2*max3,max1*min1*min2);
+    }
+
     /**
      * 5. 最长回文子串
      * 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
