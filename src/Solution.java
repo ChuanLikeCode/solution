@@ -31,9 +31,108 @@ public class Solution {
 //        node1.next.next.next.next = new ListNode(6);
 
 //        char[][] board = {{'a'}};
+//        String str = "[1,2,3,null,null,4,5]";
+//        System.out.println(str.substring(1,str.length()-1));
 
-        System.out.println(longestPalindrome("aabaavvvvvvv"));
+//        TreeNode root = new TreeNode(5);
+//        root.left = new TreeNode(2);
+//        root.right = new TreeNode(3);
+//        TreeNode right = root.right;
+//        right.left = new TreeNode(2);
+//        right.right = new TreeNode(4);
+//        right = right.left;
+//        right.left = new TreeNode(3);
+//        right.right = new TreeNode(1);
+//        System.out.println(serialize(deserialize(serialize(root))));
+
+        System.out.println();
+
     }
+
+
+
+    /**
+     * 297. 二叉树的序列化与反序列化
+     * 序列化是将一个数据结构或者对象转换为连续的比特位的操作，进而可以将转换后的数据存储在一个文件或者内存中，同时也可以通过网络传输到另一个计算机环境，采取相反方式重构得到原数据。
+     *
+     * 请设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。
+     *
+     * 示例: 
+     *
+     * 你可以将以下二叉树：
+     *
+     *     1
+     *    / \
+     *   2   3
+     *      / \
+     *     4   5
+     *
+     * 序列化为 "[1,2,3,null,null,4,5]"
+     * 提示: 这与 LeetCode 目前使用的方式一致，详情请参阅 LeetCode 序列化二叉树的格式。你并非必须采取这种方式，你也可以采用其他的方法解决这个问题。
+     *
+     * 说明: 不要使用类的成员 / 全局 / 静态变量来存储状态，你的序列化和反序列化算法应该是无状态的。
+     * @param root
+     * @return
+     */
+    // Encodes a tree to a single string.
+    public static String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder("[");
+        if (root==null)
+            return sb.append("]").toString();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            if (node!=null){
+                queue.add(node.left);
+                queue.add(node.right);
+            }
+            sb.append(node!=null?node.val:"null").append(",");
+
+        }
+        int end = sb.length();
+        for (int i = sb.length();i>=0;i--){
+            int tempIndex = i-5;
+            if (tempIndex<=0) break;
+            String temp = sb.substring(tempIndex,i);
+            if (temp.equals("null,")){
+                i = i-4;
+                end = i-1;
+            }else
+                break;
+        }
+        return sb.substring(0,end-1)+"]";
+    }
+
+    // Decodes your encoded data to tree.
+    public static TreeNode deserialize(String data) {
+        data = data.substring(1,data.length()-1);
+        if (data.length()==0) return null;
+        String[] input = data.split(",");
+        Queue<TreeNode> queue = new LinkedList<>();
+        int index = 0;
+        queue.add(new TreeNode(Integer.parseInt(input[index])));
+        TreeNode head = queue.peek();
+        while (!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            index++;
+            if (index>=input.length) break;
+            if (node!=null){
+                node.left = input[index].equals("null")?null:new TreeNode(Integer.parseInt(input[index]));
+                index++;
+                if (index>=input.length) break;
+                node.right = input[index].equals("null")?null:new TreeNode(Integer.parseInt(input[index]));
+            }
+            if (node.left!=null){
+                queue.add(node.left);
+            }
+            if (node.right!=null){
+                queue.add(node.right);
+            }
+        }
+        return head;
+    }
+
     /**
      * 238. 除自身以外数组的乘积
      * 给定长度为 n 的整数数组 nums，其中 n > 1，返回输出数组 output ，其中 output[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积。
@@ -49,9 +148,21 @@ public class Solution {
      * @param nums
      * @return
      */
+
+    //乘积 = 当前数左边的乘积 * 当前数右边的乘积
     public int[] productExceptSelf(int[] nums) {
-        /////////aaaaaaaa
-        return null;
+        int[] res = new int[nums.length];
+        int k=1;
+        for (int i = 0;i<nums.length;i++){
+            res[i] = k;
+            k*=nums[i];
+        }
+        k=1;
+        for (int i = nums.length-1;i>=0;i--){
+            res[i] *=k;
+            k*=nums[i];
+        }
+        return res;
     }
 
     /**
