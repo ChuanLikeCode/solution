@@ -34,6 +34,114 @@ public class Solution {
 
         System.out.println(longestPalindrome("aabaavvvvvvv"));
     }
+    /**
+     * 238. 除自身以外数组的乘积
+     * 给定长度为 n 的整数数组 nums，其中 n > 1，返回输出数组 output ，其中 output[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积。
+     *
+     * 示例:
+     *
+     * 输入: [1,2,3,4]
+     * 输出: [24,12,8,6]
+     * 说明: 请不要使用除法，且在 O(n) 时间复杂度内完成此题。
+     *
+     * 进阶：
+     * 你可以在常数空间复杂度内完成这个题目吗？（ 出于对空间复杂度分析的目的，输出数组不被视为额外空间。）
+     * @param nums
+     * @return
+     */
+    public int[] productExceptSelf(int[] nums) {
+        /////////aaaaaaaa
+        return null;
+    }
+
+    /**
+     * 287. 寻找重复数
+     * 给定一个包含 n + 1 个整数的数组 nums，其数字都在 1 到 n 之间（包括 1 和 n），可知至少存在一个重复的整数。假设只有一个重复的整数，找出这个重复的数。
+     *
+     * 示例 1:
+     *
+     * 输入: [1,3,4,2,2]
+     * 输出: 2
+     * 示例 2:
+     *
+     * 输入: [3,1,3,4,2]
+     * 输出: 3
+     * 说明：
+     *
+     * 不能更改原数组（假设数组是只读的）。
+     * 只能使用额外的 O(1) 的空间。
+     * 时间复杂度小于 O(n2) 。
+     * 数组中只有一个重复的数字，但它可能不止重复出现一次。
+     *
+     * 1. a ⊕ a = 0
+     * 2. a ⊕ b = b ⊕ a
+     * 3. a ⊕b ⊕ c = a ⊕ (b ⊕ c) = (a ⊕ b) ⊕ c;
+     * 4. d = a ⊕ b ⊕ c 可以推出 a = d ⊕ b ⊕ c.
+     * 5. a ⊕ b ⊕ a = b.
+     * 0^0=0；   0^1=1；   1^0=1；   1^1=0；
+     * @param nums
+     * @return
+     */
+    public static int findDuplicate(int[] nums) {
+        int index = 0;
+        while (index<nums.length){
+            if(nums[index] !=index){
+                if (nums[nums[index]]!=nums[index]){
+                    int temp = nums[index];
+                    nums[index] = nums[nums[index]];
+                    nums[temp] = temp;
+                }else {
+                    return nums[index];
+                }
+
+            }else {
+                index++;
+            }
+        }
+        return 0;
+    }
+
+
+    /**
+     * 240. 搜索二维矩阵 II
+     * 编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target。该矩阵具有以下特性：
+     *
+     * 每行的元素从左到右升序排列。
+     * 每列的元素从上到下升序排列。
+     * 示例:
+     *
+     * 现有矩阵 matrix 如下：
+     *
+     * [
+     *   [1,   4,  7, 11, 15],
+     *   [2,   5,  8, 12, 19],
+     *   [3,   6,  9, 16, 22],
+     *   [10, 13, 14, 17, 24],
+     *   [18, 21, 23, 26, 30]
+     * ]
+     * @param matrix
+     * @param target
+     * @return
+     */
+    public boolean searchMatrix2(int[][] matrix, int target) {
+        if (matrix.length==0) return false;
+        if (matrix[0].length==0) return false;
+        if (target<matrix[0][0]||target>matrix[matrix.length-1][matrix[0].length-1])
+            return false;
+        int row = matrix.length-1;
+        int col = 0;
+        while (col>=0&&col<matrix[0].length&&row>=0&&row<matrix.length){
+            if (matrix[row][col]>target){
+                row--;
+            }else if (matrix[row][col]<target){
+                col++;
+            }else {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
     /**
